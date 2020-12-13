@@ -2,6 +2,8 @@ import numpy as np
 import cv2 
 
 cap = cv2.VideoCapture(0)
+backSub = cv2.createBackgroundSubtractorMOG2(detectShadows = True)
+
 
 if not cap.isOpened:
   print("Unable to open the cam")
@@ -24,8 +26,12 @@ while(True):
   roi = frame[pt1[1]:pt2[1],pt1[0]:pt2[0],:].copy()
 
   cv2.rectangle(frame,pt1,pt2,(173, 255, 51))
-  cv2.imshow('frame',frame)
-  cv2.imshow('ROI',roi)
+
+  fgMask = backSub.apply(roi)
+  
+  cv2.imshow('frame', frame)
+  cv2.imshow('ROI', roi)
+  cv2.imshow('FgMask', fgMask)
   out.write(frame)
   keyboard = cv2.waitKey(40)
   if keyboard & 0xFF == ord('q'):
