@@ -28,7 +28,12 @@ while(True):
   cv2.rectangle(frame,pt1,pt2,(173, 255, 51))
 
   fgMask = backSub.apply(roi)
-  
+
+  gray = cv2.cvtColor(roi, cv2.COLOR_BGR2GRAY)
+  ret,bw = cv2.threshold(gray,127,255,cv2.THRESH_BINARY)
+  contours, hierarchy = cv2.findContours(bw,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)[-2:]
+  cv2.drawContours(roi, contours, -1, (0,255,0),3)
+
   cv2.imshow('frame', frame)
   cv2.imshow('ROI', roi)
   cv2.imshow('FgMask', fgMask)
