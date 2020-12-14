@@ -30,15 +30,18 @@ while True:
   #kernel = np.ones((5,5),np.uint8)
   #opening = cv2.morphologyEx(fgMask, cv2.MORPH_OPEN, kernel)
   contours, hierarchy = cv2.findContours(fgMask,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)[-2:]
-
-  max = -1
-  index = None
-  for i, cnt in enumerate(contours):
-    auxMax = len(cnt)
-    if (max < auxMax):
-      max = auxMax
-      index = i
+  if len(contours) > 0:
+    max = -1
+    #index = None
+    for i, cnt in enumerate(contours):
+      auxMax = len(cnt)
+      if (max < auxMax):
+        max = auxMax
+        index = i
+  
     cv2.drawContours(roi, contours, index, (0,255,0))
+    hull = cv2.convexHull(contours[index])
+    cv2.drawContours(roi, [hull], 0, (255,0,0), 3)
 
   cv2.imshow('FgMask', fgMask)
   cv2.imshow('frame', frame)
