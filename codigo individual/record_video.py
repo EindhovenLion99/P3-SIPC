@@ -11,7 +11,7 @@ if not cap.isOpened:
 frame_width = int(cap.get(3))
 frame_height = int(cap.get(4))
 	
-out = cv2.VideoWriter('out.avi',cv2.VideoWriter_fourcc('M','J','P','G'), 20, (frame_width,frame_height))
+out = cv2.VideoWriter('out.avi',cv2.VideoWriter_fourcc('M','J','P','G'), 10, (frame_width,frame_height))
 	
 
 while (True):

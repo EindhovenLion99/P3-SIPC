@@ -19,7 +19,7 @@ while (True):
 	
 	roi = frame[pt1[1]:pt2[1],pt1[0]:pt2[0],:].copy()
 
-	cv2.rectangle(frame,pt1,pt2,(255,0,0))
+	cv2.rectangle(frame,pt1,pt2,(173,255,51))
 	cv2.imshow('frame',frame)
 	cv2.imshow('ROI',roi)
 
