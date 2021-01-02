@@ -51,7 +51,7 @@ while True:
     #hull = cv2.convexHull(contours[index])
     #cv2.drawContours(roi, [hull], 0, (255,0,0), 3)
 
-    cnt = contours[index]
+    cnt = contours[0]
     hull = cv2.convexHull(cnt,returnPoints = False)
     defects = cv2.convexityDefects(cnt,hull)
 
