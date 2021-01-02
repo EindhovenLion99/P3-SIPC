@@ -37,8 +37,11 @@ while True:
   roi = frame[pt1[1]:pt2[1],pt1[0]:pt2[0],:].copy()
   cv2.rectangle(frame,pt1,pt2,(173, 255, 51))
   fgMask = backSub.apply(roi,learningRate = lr)
+  
+  kernel = np.ones((5,5),np.uint8)
+  opening = cv2.morphologyEx(fgMask, cv2.MORPH_OPEN, kernel)
 
-  contours, hierarchy = cv2.findContours(fgMask,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)[-2:]
+  contours, hierarchy = cv2.findContours(opening,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)[-2:]
   if len(contours) > 0:
     max = -1
     for i, cnt in enumerate(contours):
