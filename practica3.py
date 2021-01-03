@@ -37,7 +37,7 @@ while True:
   roi = frame[pt1[1]:pt2[1],pt1[0]:pt2[0],:].copy()
   cv2.rectangle(frame,pt1,pt2,(173, 255, 51))
   fgMask = backSub.apply(roi,learningRate = lr)
-  
+
   kernel = np.ones((5,5),np.uint8)
   opening = cv2.morphologyEx(fgMask, cv2.MORPH_OPEN, kernel)
 
@@ -69,6 +69,11 @@ while True:
         ang = angle(start,end,far)
         cv2.line(roi,start,end,[255,0,0],2)
         cv2.circle(roi,far,5,[0,0,255],-1)  
+
+      rect = cv2.boundingRect(cnt)
+      pt1_ = (rect[0],rect[1])
+      pt2_ = (rect[0]+rect[2],rect[1]+rect[3])
+      cv2.rectangle(roi,pt1_,pt2_,(0,0,255),3)
 
   cv2.imshow('FgMask', fgMask)
   cv2.imshow('frame', frame)
