@@ -92,14 +92,14 @@ while True:
         minY = np.linalg.norm(cnt - [x, y])
         if minY >= 850:
           fingers = fingers + 1
-          #cv2.putText(roi, '{}'.format(fingers), (100,100), 1, 1, color_fingers, 1, cv2.LINE_AA)
+          #cv2.putText(roi, '{}'.format(fingers), tuple(cnt), 1, 1, color_fingers, 1, cv2.LINE_AA)
 
       for i in range(len(beginning)):
         fingers = fingers + 1
-        cv2.putText(roi, '{}'.format(fingers), tuple(beginning[i]), 1, 1, color_fingers, 1, cv2.LINE_AA)
+        #cv2.putText(roi, '{}'.format(fingers), tuple(beginning[i]), 1, 1, color_fingers, 1, cv2.LINE_AA)
         if i == len(beginning) - 1:
           fingers = fingers + 1
-          cv2.putText(roi, '{}'.format(fingers), tuple(ending[i]), 1, 1, color_fingers, 1, cv2.LINE_AA)
+          #cv2.putText(roi, '{}'.format(fingers), tuple(ending[i]), 1, 1, color_fingers, 1, cv2.LINE_AA)
       cv2.putText(frame, '{}'.format(fingers), (390, 45), 1, 4, (color_fingers), 2, cv2.LINE_AA)
       rect = cv2.boundingRect(cnt)
       pt1_ = (rect[0],rect[1])
