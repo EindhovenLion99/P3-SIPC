@@ -1,7 +1,7 @@
 import numpy as np
 import cv2 
 import math
-# import imutils 
+import imutils 
 
 cap = cv2.VideoCapture(0)
 backSub = cv2.createBackgroundSubtractorMOG2(detectShadows = True)
@@ -52,7 +52,17 @@ while True:
         max = auxMax
         index = i
 
-    cnt = contours[0]
+      #Encontrar centro
+      M = cv2.moments(cnt)
+      if M["m00"] == 0: M["m00"] = 1
+      x = int(M["m10"]/M["m00"])
+      y = int(M["m01"]/M["m00"])
+      cv2.circle(roi, tuple([x, y]), 5, (0, 255, 0), -1)
+
+      cv2.drawContours(roi, contours, index, (0,255,0))
+      #hull = cv2.convexHull(contours[index])
+      #cv2.drawContours(roi, [hull], 0, (255,0,0), 3)
+    cnt = contours[index]
     hull = cv2.convexHull(cnt,returnPoints = False)
     defects = cv2.convexityDefects(cnt,hull)
 
