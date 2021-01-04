@@ -1,7 +1,7 @@
 import numpy as np
 import cv2 
 import math
-import imutils 
+# import imutils 
 
 cap = cv2.VideoCapture(0)
 backSub = cv2.createBackgroundSubtractorMOG2(detectShadows = True)
