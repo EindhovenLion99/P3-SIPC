@@ -1,7 +1,8 @@
 import numpy as np
 import cv2 
 import math
-import imutils 
+import imutils
+from variables_dibujo import *
 
 cap = cv2.VideoCapture(0)
 backSub = cv2.createBackgroundSubtractorMOG2(detectShadows = True)
@@ -39,6 +40,43 @@ while True:
   roi = frame[pt1[1]:pt2[1],pt1[0]:pt2[0],:].copy()
   cv2.rectangle(frame,pt1,pt2,(173, 255, 51))
   fgMask = backSub.apply(roi,learningRate = lr)
+
+  # Seccion de dibujo
+  frameHSV = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+  if aux is None: aux = np.zeros(frame.shape, dtype = np.uint8)
+
+  # Seleccion de colores
+
+  cv2.rectangle(frame,(0,0),(50,50), colorAmarillo, 3)
+  cv2.rectangle(frame,(0,52),(50,100), colorRojo, 3)
+  cv2.rectangle(frame,(0,102),(50,150), colorVerde, 3)
+
+  # Limpiar Pantalla
+
+  cv2.rectangle(frame,(0, 200), (50, 250), LimpiarPantalla, 3)
+  cv2.putText(frame, 'Borrar', (5, 225), 2, 0.4, LimpiarPantalla, 1, cv2.LINE_AA)
+
+  maskAzul = cv2.inRange(frameHSV, AzulClaro, AzulFuerte)
+  maskAzul = cv2.erode(maskAzul, None, iterations=1)
+  maskAzul = cv2.dilate(maskAzul, None, iterations=2)
+  maskAzul = cv2.medianBlur(maskAzul, 13)
+  cnts, _ = cv2.findContours(maskAzul, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+  cnts = sorted(cnts, key=cv2.contourArea, reverse=True)[:1]
+
+  for c in cnts:
+    area = cv2.contourArea(c)
+    if area > 1000:
+      x, y2, w, h = cv2.boundingRect(c)
+      # cv2.rectangle(frame, (x, y2), (x+w, y2+h), (0,255,0),2)
+      x2 = x + w//2
+
+      if x1 is not None:
+        if 0 < x2 < 50 and 0 < y2 < 50:
+          color = colorAmarillo
+
+    else:
+      x1 = None
+      y1 = None
 
   kernel = np.ones((5,5),np.uint8)
   opening = cv2.morphologyEx(fgMask, cv2.MORPH_OPEN, kernel)
@@ -110,6 +148,8 @@ while True:
   cv2.imshow('FgMask', fgMask)
   cv2.imshow('frame', frame)
   cv2.imshow('ROI', roi)
+  #cv2.imshow('imAux', aux)
+  cv2.imshow('Rojo', maskAzul)
   #cv2.imshow('prueba', opening)
 
   keyboard = cv2.waitKey(10)
