@@ -52,21 +52,7 @@ while True:
         max = auxMax
         index = i
 
-<<<<<<< HEAD
     cnt = contours[0]
-=======
-      #Encontrar centro
-      M = cv2.moments(cnt)
-      if M["m00"] == 0: M["m00"] = 1
-      x = int(M["m10"]/M["m00"])
-      y = int(M["m01"]/M["m00"])
-      cv2.circle(roi, tuple([x, y]), 5, (0, 255, 0), -1)
-
-      cv2.drawContours(roi, contours, index, (0,255,0))
-      #hull = cv2.convexHull(contours[index])
-      #cv2.drawContours(roi, [hull], 0, (255,0,0), 3)
-    cnt = contours[index]
->>>>>>> fc2be1f5193b517e28c72d5a2cb48d04e4de2787
     hull = cv2.convexHull(cnt,returnPoints = False)
     defects = cv2.convexityDefects(cnt,hull)
 
