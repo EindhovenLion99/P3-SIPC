@@ -73,6 +73,19 @@ while True:
       if x1 is not None:
         if 0 < x2 < 50 and 0 < y2 < 50:
           color = colorAmarillo
+        if 0 < x2 < 52 and 50 < y2 < 100:
+          color = colorRojo
+        if 0 < x2 < 102 and 50 < y2 < 150:
+          color = colorVerde
+        if 0 < y2 < 60 or 0 < y1 < 60:
+          aux = aux
+        if 0 < x2 < 200 and 50 < y2 < 250:
+          aux = np.zeros(frame.shape, dtype = np.uint8)
+        else:
+          aux = cv2.line(aux, (x1,y1), (x2, y2), color, 4)
+      cv2.circle(frame, (x2,y2), 3, color, 3)
+      x1 = x2
+      y1 = y2
 
     else:
       x1 = None
@@ -148,8 +161,8 @@ while True:
   cv2.imshow('FgMask', fgMask)
   cv2.imshow('frame', frame)
   cv2.imshow('ROI', roi)
-  #cv2.imshow('imAux', aux)
-  cv2.imshow('Rojo', maskAzul)
+  cv2.imshow('imAux', aux)
+  #cv2.imshow('Azul', maskAzul)
   #cv2.imshow('prueba', opening)
 
   keyboard = cv2.waitKey(10)
