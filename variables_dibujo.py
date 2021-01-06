@@ -1,8 +1,12 @@
 import cv2
 import numpy as np
 
-AzulClaro = np.array([110, 50, 50], np.uint8)
-AzulFuerte = np.array([130, 255, 255], np.uint8)
+RojoClaro = np.array([0, 100, 100], np.uint8)
+RojoFuerte = np.array([8, 255, 255], np.uint8)
+
+#RojoClaro2 = np.array([175, 100, 20], np.uint8)
+#RojoFuerte2 = np.array([179, 255, 255], np.uint8)
+
 
 # Colores y grosor
 

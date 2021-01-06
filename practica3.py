@@ -56,11 +56,16 @@ while True:
   cv2.rectangle(frame,(0, 200), (50, 250), LimpiarPantalla, 3)
   cv2.putText(frame, 'Borrar', (5, 225), 2, 0.4, LimpiarPantalla, 1, cv2.LINE_AA)
 
-  maskAzul = cv2.inRange(frameHSV, AzulClaro, AzulFuerte)
-  maskAzul = cv2.erode(maskAzul, None, iterations=1)
-  maskAzul = cv2.dilate(maskAzul, None, iterations=2)
-  maskAzul = cv2.medianBlur(maskAzul, 13)
-  cnts, _ = cv2.findContours(maskAzul, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+  maskRojo = cv2.inRange(frameHSV, RojoClaro, RojoFuerte)
+  #maskRojo2 = cv2.inRange(frameHSV, RojoClaro2, RojoFuerte2)
+
+  #maskRojo = cv2.add(maskRojo1, maskRojo2)
+  maskRojoV = cv2.bitwise_and(frame, frame, mask = maskRojo)
+
+  maskRojo = cv2.erode(maskRojo, None, iterations=1)
+  maskRojo = cv2.dilate(maskRojo, None, iterations=2)
+  maskRojo = cv2.medianBlur(maskRojo, 13)
+  cnts, _ = cv2.findContours(maskRojo, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
   cnts = sorted(cnts, key=cv2.contourArea, reverse=True)[:1]
 
   for c in cnts:
@@ -85,8 +90,7 @@ while True:
           aux = cv2.line(aux, (x1,y1), (x2, y2), color, 4)
       cv2.circle(frame, (x2,y2), 3, color, 3)
       x1 = x2
-      y1 = y2
-
+      y1 = y2 
     else:
       x1 = None
       y1 = None
@@ -162,8 +166,8 @@ while True:
   cv2.imshow('frame', frame)
   cv2.imshow('ROI', roi)
   cv2.imshow('imAux', aux)
-  #cv2.imshow('Azul', maskAzul)
-  #cv2.imshow('prueba', opening)
+  cv2.imshow('Rojo', maskRojoV)
+  # cv2.imshow('prueba', opening)
 
   keyboard = cv2.waitKey(10)
   if keyboard & 0xFF == ord('d'):
