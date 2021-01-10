@@ -48,24 +48,20 @@ while True:
   # Seleccion de colores
 
   cv2.rectangle(frame,(0,0),(50,50), colorAmarillo, 3)
-  cv2.rectangle(frame,(0,52),(50,100), colorRojo, 3)
-  cv2.rectangle(frame,(0,102),(50,150), colorVerde, 3)
+  cv2.rectangle(frame,(50,0),(100,50), colorAzul, 3)
+  cv2.rectangle(frame,(100,0),(150,50), colorVerde, 3)
 
   # Limpiar Pantalla
 
-  cv2.rectangle(frame,(0, 200), (50, 250), LimpiarPantalla, 3)
-  cv2.putText(frame, 'Borrar', (5, 225), 2, 0.4, LimpiarPantalla, 1, cv2.LINE_AA)
+  cv2.rectangle(frame,(300, 0), (400, 50), LimpiarPantalla, 1)
+  cv2.putText(frame, 'Borrar', (320, 20), 2, 0.6, LimpiarPantalla, 1, cv2.LINE_AA)
 
-  maskRojo = cv2.inRange(frameHSV, RojoClaro, RojoFuerte)
-  #maskRojo2 = cv2.inRange(frameHSV, RojoClaro2, RojoFuerte2)
-
-  #maskRojo = cv2.add(maskRojo1, maskRojo2)
-  maskRojoV = cv2.bitwise_and(frame, frame, mask = maskRojo)
-
-  maskRojo = cv2.erode(maskRojo, None, iterations=1)
-  maskRojo = cv2.dilate(maskRojo, None, iterations=2)
-  maskRojo = cv2.medianBlur(maskRojo, 13)
-  cnts, _ = cv2.findContours(maskRojo, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+  maskAzul = cv2.inRange(frameHSV, AzulClaro, AzulFuerte)
+  maskAzulV = cv2.bitwise_and(frame, frame, mask = maskAzul)
+  maskAzul = cv2.erode(maskAzul, None, iterations=1)
+  maskAzul = cv2.dilate(maskAzul, None, iterations=2)
+  maskAzul = cv2.medianBlur(maskAzul, 13)
+  cnts, _ = cv2.findContours(maskAzul, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
   cnts = sorted(cnts, key=cv2.contourArea, reverse=True)[:1]
 
   for c in cnts:
@@ -73,19 +69,21 @@ while True:
     if area > 1000:
       x, y2, w, h = cv2.boundingRect(c)
       # cv2.rectangle(frame, (x, y2), (x+w, y2+h), (0,255,0),2)
-      x2 = x + w//2
+      x2 = x + w//2 # Coordenada de la punta de la tapa del boli
 
       if x1 is not None:
         if 0 < x2 < 50 and 0 < y2 < 50:
           color = colorAmarillo
-        if 0 < x2 < 52 and 50 < y2 < 100:
-          color = colorRojo
-        if 0 < x2 < 102 and 50 < y2 < 150:
+        if 50 < x2 < 100 and 0 < y2 < 50:
+          color = colorAzul
+        if 100 < x2 < 150 and 0 < y2 < 50:
           color = colorVerde
+        if 300 < x2 < 400 and 0 < y2 < 50:
+          cv2.rectangle(frame,(300, 0), (400, 50), LimpiarPantalla, 2)
+          cv2.putText(frame, 'Borrar', (320, 20), 2, 0.6, LimpiarPantalla, 2, cv2.LINE_AA)
+          aux = np.zeros(frame.shape, dtype = np.uint8)
         if 0 < y2 < 60 or 0 < y1 < 60:
           aux = aux
-        if 0 < x2 < 200 and 50 < y2 < 250:
-          aux = np.zeros(frame.shape, dtype = np.uint8)
         else:
           aux = cv2.line(aux, (x1,y1), (x2, y2), color, 4)
       cv2.circle(frame, (x2,y2), 3, color, 3)
@@ -166,7 +164,7 @@ while True:
   cv2.imshow('frame', frame)
   cv2.imshow('ROI', roi)
   cv2.imshow('imAux', aux)
-  cv2.imshow('Rojo', maskRojoV)
+  cv2.imshow('Azul', maskAzulV)
   # cv2.imshow('prueba', opening)
 
   keyboard = cv2.waitKey(10)
